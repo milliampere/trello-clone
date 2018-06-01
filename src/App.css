@@ -1,0 +1,24 @@
+.app {
+  text-align: center;
+}
+
+.app__header {
+  padding: 10px;
+}
+
+.app__header__heading {
+  margin: 0;
+}
+
+.app__header__logo {
+  height: 80px;
+}
+
+
+
+.boards {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+}
+
