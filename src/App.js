@@ -1,14 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Board from './components/Board';
-import NewBoard from './components/Board/NewBoard';
+import Boards from './components/Board';
 import firebase, { addBoard as pushBoardToFirebase, removeBoard as removeBoardFromFirebase } from './firebase';
 
 class App extends React.Component {
   state = {
-    boards: [],
-    displayNewBoardForm: false,
+    boards: []
   };
 
   componentDidMount() {
@@ -40,9 +38,21 @@ class App extends React.Component {
       })
   }
 
-  handleNewBoardToggle = (bool) => {
-    this.setState({displayNewBoardForm: bool});
-  } 
+
+  toggleModal = (handleConfirm) => {
+    this.setState({
+      showPortal: !this.state.showPortal
+    })
+    handleConfirm();
+  }
+
+  removeBoard = (key) => {
+    this.setState({
+      showPortal: true,
+    })
+
+    /* confirm ? removeBoardFromFirebase() : null; */
+  }
 
   render() {
     return (
@@ -53,13 +63,11 @@ class App extends React.Component {
           </h1>
         </header>
         
-        <div className="boards">
-          <NewBoard display={this.state.displayNewBoardForm} displayForm={this.handleNewBoardToggle} addNewBoard={pushBoardToFirebase} />
-          {this.state.boards.map((board) => {
-            return <Board name={board.name} id={board.id} key={board.id} removeBoard={removeBoardFromFirebase} />
-          })}
-        </div>
-
+        <Boards 
+          boards={this.state.boards}
+          pushBoardToFirebase={pushBoardToFirebase}
+          removeBoardFromFirebase={removeBoardFromFirebase}
+        />
 
       </div>
     );

@@ -1,4 +1,4 @@
-.board {
+.single-board {
   background-color: #fff;
   border: 1px solid #c0c0c0;
   border-radius: 5px;
@@ -8,19 +8,17 @@
   margin-bottom: 15px;
 }
 
-.board__heading {
+.single-board__heading {
   font-size: 16px;
 }
 
-.board__button--remove {
+.single-board__button--remove {
   position: absolute;
   top: 0;
   right: 0;
   padding: 5px;
   cursor: pointer;
 }
-
-
 
 
 
@@ -31,6 +29,7 @@
   box-shadow: 2px 2px 15px 1px rgba(68, 68, 68, 0.6);
   padding: 5px;
   margin-bottom: 15px;
+  cursor: pointer;
 }
   
 .new-board__header {
