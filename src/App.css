@@ -14,11 +14,3 @@
   height: 80px;
 }
 
-
-
-.boards {
-  display: flex;
-  flex-direction: column;
-  padding: 0 15px;
-}
-

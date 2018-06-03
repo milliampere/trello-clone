@@ -6,14 +6,13 @@
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 0 100vmax rgba(210,210,210, .7);
+  box-shadow: 0 0 0 100vmax rgba(100,100,100, .7);
   font-size: 18px;
 }
 
 .confirmation-modal__header {
   text-align: center;
   font-size: 24px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
   padding: 25px 25px 15px 25px;
 }
 

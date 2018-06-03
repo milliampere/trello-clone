@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import icon from './assets/notes.png';
 import './App.css';
 import Boards from './components/Board';
 import firebase, { addBoard as pushBoardToFirebase, removeBoard as removeBoardFromFirebase } from './firebase';
@@ -59,7 +59,7 @@ class App extends React.Component {
       <div className="app">
         <header className="app__header">
           <h1 className="app__header__heading">
-            <img src={logo} className="app__header__logo" alt="logo" />
+            <img src={icon} className="app__header__logo" alt="logo" />
           </h1>
         </header>
         

@@ -12,22 +12,22 @@ class NewBoard extends React.Component {
   handleSubmit = () => {
     this.props.addNewBoard(this.state.input);
     this.setState({input: ''});
-    this.props.displayForm(false);
+    this.props.openForm(false);
   }
 
   render() {
     const {open, openForm} = this.props;
     return (
-      <div className="new-board">
+      <div className={open ? "new-board" : "new-board new-board--closed"}>
         <div className="new-board__header" onClick={() => openForm(true)}>
-          <h2>Create new board</h2>
+          <h2 className="new-board__header__heading">Create new board</h2>
         </div>
         { open && <div className="new-board__content">
           <label className="new-board__label">Choose a name for the board</label>
           <input type="text" value={this.state.input} onChange={this.handleChange} className="new-board__input" />
-          <div>
-            <button onClick={() => openForm(false)}>Cancel</button>
-            <button className="new-board__button--save" onClick={this.handleSubmit}>Save</button>
+          <div className="new-board__footer">
+            <button className="new-board__footer__button--close" onClick={() => openForm(false)}>Cancel</button>
+            <button className="new-board__footer__button--save" onClick={this.handleSubmit}>Save</button>
           </div>
         </div>
         }

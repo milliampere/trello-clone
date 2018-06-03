@@ -9,3 +9,5 @@
 - Drag and drop cards
 
 
+## 
+- Includes React 16 feature "Portals". Portals provide a way to render children into a DOM node that exists outside the DOM hierarchy of the parent component. 
