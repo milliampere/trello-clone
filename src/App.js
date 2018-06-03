@@ -6,7 +6,8 @@ import firebase, { addBoard as pushBoardToFirebase, removeBoard as removeBoardFr
 
 class App extends React.Component {
   state = {
-    boards: []
+    boards: [],
+    showPage: 'boards',
   };
 
   componentDidMount() {
@@ -39,19 +40,8 @@ class App extends React.Component {
   }
 
 
-  toggleModal = (handleConfirm) => {
-    this.setState({
-      showPortal: !this.state.showPortal
-    })
-    handleConfirm();
-  }
-
-  removeBoard = (key) => {
-    this.setState({
-      showPortal: true,
-    })
-
-    /* confirm ? removeBoardFromFirebase() : null; */
+  handleBoardClick = (id) => {
+    this.setState({showPage: 'list', listId: id});
   }
 
   render() {
@@ -59,15 +49,20 @@ class App extends React.Component {
       <div className="app">
         <header className="app__header">
           <h1 className="app__header__heading">
-            <img src={icon} className="app__header__logo" alt="logo" />
+            <img src={icon} className="app__header__logo" alt="logo" onClick={() => {this.setState({showPage: 'boards'})}} />
           </h1>
         </header>
         
+        {this.state.showPage === 'boards' && 
         <Boards 
           boards={this.state.boards}
           pushBoardToFirebase={pushBoardToFirebase}
           removeBoardFromFirebase={removeBoardFromFirebase}
-        />
+          handleBoardClick={this.handleBoardClick}
+        />}
+
+        {this.state.showPage === 'list' && 
+        <div>Hello</div>}
 
       </div>
     );

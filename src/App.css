@@ -12,5 +12,6 @@
 
 .app__header__logo {
   height: 80px;
+  cursor: pointer;
 }
 

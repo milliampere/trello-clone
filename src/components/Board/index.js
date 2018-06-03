@@ -12,7 +12,7 @@ class Boards extends React.Component {
   };
 
   render() {
-    const {boards, pushBoardToFirebase, removeBoardFromFirebase } = this.props;
+    const {boards, pushBoardToFirebase, removeBoardFromFirebase, handleBoardClick } = this.props;
     return (
       <div className="boards">
         <NewBoard 
@@ -35,6 +35,7 @@ class Boards extends React.Component {
                   showPortal: id
                 })
               }
+              handleBoardClick={handleBoardClick}
             />
           })
         }
