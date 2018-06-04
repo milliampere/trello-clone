@@ -1,0 +1,12 @@
+.draggable {
+  background-color: #fff;
+  padding: 5px;
+  margin: 5px;
+}
+
+.droppable {
+  height: 30px;
+  border: 2px dotted #ccc;
+  background: #f1f1f1;
+  margin: 5px;
+}

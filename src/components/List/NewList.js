@@ -9,7 +9,7 @@ class NewList extends React.Component {
   onEnter = (e) => {
     if(e.key === 'Enter') {
       console.log('hej');
-      //this.props.addListToFirebase(this.props.board.id, this.state.input);
+      this.props.addListToFirebase(this.props.board.id, this.state.input);
       setTimeout(() => this.setState({input: '', open: false}), 500);
     }
   }
