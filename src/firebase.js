@@ -34,3 +34,33 @@ export function removeBoard(key) {
     .then(() => { console.log('Removed!') })
     .catch((error) => { console.log('Error pushing', error) });
 }
+
+export function addList(boardId, name) {
+  console.log('boardid', boardId);
+  console.log('name', name);
+  const boardsRef = firebase.database().ref('boards/'+ boardId);
+  const listsRef = firebase.database().ref('lists/');
+
+  debugger;
+
+  const list = {
+    name,
+    boardId,
+  };
+
+  const newListKey = firebase.database().ref().child('lists').push().key;
+  //const newListKey = listsRef.push(list).key();
+
+  boardsRef.set({
+    lists: newListKey
+  });
+
+  // Write the new list's data simultaneously
+/*   var updates = {};
+  updates['/boards/' + newPostKey] = postData;
+  updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+  return firebase.database().ref().update(updates); */
+
+
+}
