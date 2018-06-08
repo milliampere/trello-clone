@@ -2,7 +2,6 @@ import React from 'react';
 import Card from '../Card';
 import { moveCard as moveCardInFirebase } from '../../firebase';
 
-
 class ListUnit extends React.Component {
 
   onDragStart = (e, card, fromList) => {
@@ -24,10 +23,11 @@ class ListUnit extends React.Component {
   }
 
   render(){
-    const {list, cards} = this.props;
+    const {list, cards, openPortal} = this.props;
     return (
       <div className="list-unit">
           <h3 className="list-unit__heading">{list.name}</h3>
+          <div className="list-unit__button--remove" onClick={() => openPortal({id: list.id, name: list.name})}>X</div>
           <input type="text" className="list-unit__input" />
           {cards.map((card) => <Card list={list} card={card} key={card.id} onDragStart={this.onDragStart} />)}
 

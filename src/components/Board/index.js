@@ -15,22 +15,22 @@ class Boards extends React.Component {
     const {boards, pushBoardToFirebase, removeBoardFromFirebase, handleBoardClick } = this.props;
     return (
       <div className="boards">
-        <NewBoard 
-          open={this.state.showNewBoard} 
-          openForm={(bool) => 
+        <NewBoard
+          open={this.state.showNewBoard}
+          openForm={(bool) =>
             this.setState({showNewBoard: bool})
-          } 
-          addNewBoard={pushBoardToFirebase} 
+          }
+          addNewBoard={pushBoardToFirebase}
         />
 
-        { 
+        {
           boards.map((board) => {
-            return <SingleBoard 
-              name={board.name} 
-              id={board.id} 
-              key={board.id} 
+            return <SingleBoard
+              name={board.name}
+              id={board.id}
+              key={board.id}
               showPortal={this.state.showPortal}
-              openPortal={(id) => 
+              openPortal={(id) =>
                 this.setState({
                   showPortal: id
                 })

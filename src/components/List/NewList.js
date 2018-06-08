@@ -15,10 +15,10 @@ class NewList extends React.Component {
   }
 
   render(){
-    const {addListToFirebase, children, board} = this.props;
+    const {addListToFirebase, board} = this.props;
     return (
       <div className="new-list">
-        <span onClick={() => this.setState({open: !this.state.open})} className="new-list__header">{children}</span>
+        <span onClick={() => this.setState({open: !this.state.open})} className="new-list__header">Add new list...</span>
         {this.state.open &&
         <input type="text"
           onChange={(e) => this.setState({input: e.target.value})}

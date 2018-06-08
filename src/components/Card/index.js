@@ -5,10 +5,13 @@ const Card = (props) => {
   const {onDragStart, list, card} = props;
   return (
     <div
-      className="draggable"
+      className="card draggable"
       onDragStart={(e)=>onDragStart(e, card, list)}
       draggable="true"
-    >{card.name}</div>
+    >
+      <span>{card.name}</span>
+      <div className="card__button--remove">X</div>
+    </div>
   );
 };
 
