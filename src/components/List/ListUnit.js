@@ -1,35 +1,39 @@
 import React from 'react';
-import Card from '../Card';
+import Cards from '../Card';
 import { moveCard as moveCardInFirebase } from '../../firebase';
 
 class ListUnit extends React.Component {
 
-  onDragStart = (e, card, fromList) => {
+  onDragStart = (e, extendedCard, fromList) => {
     //e.preventDefault();
-    console.log('dragstart', card.name, 'from: ', fromList.name);
-    e.dataTransfer.setData('text/plain', JSON.stringify(card))
+    e.dataTransfer.setData('text/plain', JSON.stringify(extendedCard))
   }
 
   onDragOver = (e) => {
     e.preventDefault();
-    //console.log('dragover');
   }
 
   onDrop = (e, toList) => {
     e.preventDefault();
-    const card = JSON.parse(e.dataTransfer.getData('text'));
-    moveCardInFirebase(toList.id, card);
-    console.log('ondrop', card.name, 'to: ', toList.name);
+    const extendedCard = JSON.parse(e.dataTransfer.getData('text'));
+
+    moveCardInFirebase(extendedCard, toList);
+    //console.log('ondrop', card.name, 'to: ', toList.name);
   }
 
   render(){
-    const {list, cards, openPortal} = this.props;
+    const {list, board, openPortal, user} = this.props;
     return (
       <div className="list-unit">
           <h3 className="list-unit__heading">{list.name}</h3>
           <div className="list-unit__button--remove" onClick={() => openPortal({id: list.id, name: list.name})}>X</div>
-          <input type="text" className="list-unit__input" />
-          {cards.map((card) => <Card list={list} card={card} key={card.id} onDragStart={this.onDragStart} />)}
+
+          <Cards
+            onDragStart={this.onDragStart}
+            user={user}
+            board={board}
+            list={list}
+          />
 
           <div
             className="droppable"

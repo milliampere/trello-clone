@@ -10,7 +10,8 @@ class NewBoard extends React.Component {
   }
 
   handleSubmit = () => {
-    this.props.addNewBoard(this.state.input);
+    console.log(this.props.user.uid);
+    this.props.addNewBoard(this.props.user.uid, this.state.input);
     this.setState({input: ''});
     this.props.openForm(false);
   }
@@ -31,7 +32,7 @@ class NewBoard extends React.Component {
           </div>
         </div>
         }
-      </div>  
+      </div>
     )
   }
 }

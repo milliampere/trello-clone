@@ -12,7 +12,7 @@ class Boards extends React.Component {
   };
 
   render() {
-    const {boards, pushBoardToFirebase, removeBoardFromFirebase, handleBoardClick } = this.props;
+    const {user, boards, addBoardToFirebase, removeBoardFromFirebase, handleBoardClick } = this.props;
     return (
       <div className="boards">
         <NewBoard
@@ -20,13 +20,15 @@ class Boards extends React.Component {
           openForm={(bool) =>
             this.setState({showNewBoard: bool})
           }
-          addNewBoard={pushBoardToFirebase}
+          addNewBoard={addBoardToFirebase}
+          user={user}
         />
 
         {
           boards.map((board) => {
             return <SingleBoard
               name={board.name}
+              user={user}
               id={board.id}
               key={board.id}
               showPortal={this.state.showPortal}
@@ -49,7 +51,7 @@ class Boards extends React.Component {
             })
           }
           handleConfirm={() => {
-            removeBoardFromFirebase(this.state.showPortal.id);
+            removeBoardFromFirebase(this.props.user.uid, this.state.showPortal.id);
             this.setState({
               showPortal: null,
             })

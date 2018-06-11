@@ -16,89 +16,36 @@ firebase.initializeApp(config);
 export default firebase;
 
 
-export function addBoard(name) {
-  const boardsRef = firebase.database().ref('boards/');
+
+export function addBoard(userId, name) {
 
   const board = {
     name
   };
 
-  boardsRef.push(board)
-    .then(() => { console.log('Pushed!') })
+  const newBoardKey = 'b' + firebase.database().ref().child('boards').push().key;
+
+  var updates = {};
+  updates['/boards/' + userId + '/' + newBoardKey] = board;
+  return firebase.database().ref().update(updates);
+
+}
+
+export function removeBoard(userId, boardId) {
+
+  var updates = {};
+  updates[`/boards/${userId}/${boardId}`] = null;
+  updates[`/lists/${userId}/${boardId}`] = null;
+  updates[`/cards/${userId}/${boardId}`] = null;
+
+  return firebase.database().ref().update(updates)
+    .then(() => { console.log('Removed!') })
     .catch((error) => { console.log('Error pushing', error) });
-}
-
-export function addBoard2(name) {
-
-  const board = {
-    name
-  };
-
-  const newBoardKey = 'b' + firebase.database().ref().child('boards2').push().key;
-
-  var updates = {};
-  updates['/boards2/' + newBoardKey] = board;
-  return firebase.database().ref().update(updates);
 
 }
 
-export function removeBoard(key) {
-  const boardRef = firebase.database().ref(`boards/${key}`);
 
-  var updates = {};
-  updates['/boards/' + key] = null;
-
-  boardRef.once('value').then(function(snapshot) {
-
-    // Remove associated lists
-    for (const listId in snapshot.val().lists) {
-      updates['/lists/' + listId] = null;
-    }
-
-    // Remove associated cards
-    for (const cardId in snapshot.val().cards) {
-      updates['/cards/' + cardId] = null;
-    }
-
-    console.log(updates);
-
-  });
-
-  return firebase.database().ref().update(updates);
-
-}
-
-export function removeBoard2(boardId) {
-
-  var updates = {};
-  updates['/boards2/' + boardId] = null;
-  updates['/lists2/' + boardId] = null;
-  updates['/cards2/' + boardId] = null;
-
-  return firebase.database().ref().update(updates);
-
-}
-
-export function addList(boardId, name) {
-
-  const list = {
-    name,
-    boardId,
-  };
-
-  // Get a key for a new list
-  const newListKey = firebase.database().ref().child('lists').push().key;
-
-  // Write the new list's data simultaneously
-  var updates = {};
-  updates['/lists/' + newListKey] = list;
-  updates['/boards/' + boardId + '/lists/' + newListKey ] = true;
-
-  return firebase.database().ref().update(updates);
-
-}
-
-export function addList2(boardId, name) {
+export function addList(userId, boardId, name) {
 
   const list = {
     name
@@ -109,52 +56,25 @@ export function addList2(boardId, name) {
 
   // Write the new list's data simultaneously
   var updates = {};
-  updates['/lists2/' + boardId + '/' + newListKey] = list;
+  updates['/lists/' + userId + '/' + boardId + '/' + newListKey] = list;
 
   return firebase.database().ref().update(updates);
 
 }
 
-export function removeList(key) {
-  const listRef = firebase.database().ref(`lists/${key}`);
+export function removeList(userId, boardId, listId) {
 
-  listRef.remove()
+  var updates = {};
+  updates['/lists/' + userId + '/' + boardId + '/' + listId] = null;
+  updates['/cards/' + userId + '/' + boardId + '/' + listId] = null;
+
+  return firebase.database().ref().update(updates)
     .then(() => { console.log('Removed!') })
     .catch((error) => { console.log('Error pushing', error) });
-}
-
-export function removeList2(boardId, listId) {
-
-  var updates = {};
-  updates['/lists2/' + boardId + '/' + listId] = null;
-  updates['/cards2/' + boardId + '/' + listId] = null;
-
-  return firebase.database().ref().update(updates);
 
 }
 
-export function addCard(boardId, listId, name) {
-
-  const card = {
-    name,
-    listId,
-  };
-
-  // Get a key for a new card
-  const newCardKey = firebase.database().ref().child('cards').push().key;
-
-  // Write the new cards's data simultaneously
-  var updates = {};
-  updates['/cards/' + newCardKey] = card;
-  updates['/lists/' + listId + '/cards/' + newCardKey ] = true;
-  updates['/boards/' + boardId + '/cards/' + newCardKey ] = true;
-
-  return firebase.database().ref().update(updates);
-
-}
-
-
-export function addCard2(boardId, listId, name) {
+export function addCard(userId, boardId, listId, name) {
 
   const card = {
     name
@@ -165,36 +85,44 @@ export function addCard2(boardId, listId, name) {
 
   // Write the new list's data simultaneously
   var updates = {};
-  updates['/cards2/' + boardId + '/' + listId + '/' + newCardKey] = card;
+  updates['/cards/' + userId + '/' +  boardId + '/' + listId + '/' + newCardKey] = card;
 
   return firebase.database().ref().update(updates);
 
 }
 
 
-export function removeCard2(boardId, listId, cardId) {
+export function removeCard(userId, boardId, listId, cardId) {
 
   var updates = {};
-  updates['/cards2/' + boardId + '/' + listId + '/' + cardId] = null;
+  updates['/cards2/' + userId + '/' + boardId + '/' + listId + '/' + cardId] = null;
 
   return firebase.database().ref().update(updates);
 
 }
 
 
-export function moveCard(listId, card) {
+export function moveCard(extendedCard, newList) {
 
   const updatedCard = {
-    listId: listId,
-    name: card.name
+    name: extendedCard.card.name
   }
 
-  // Write the new list's data simultaneously
+  const userId = extendedCard.user.uid;
+  const boardId = extendedCard.board.id;
+  const oldListId = extendedCard.list.id;
+  const newListId = newList.id;
+  const cardId = extendedCard.card.id;
+
+  console.log('extended card', extendedCard);
+  console.log('newlist', newList);
+
+  // Write data simultaneously
   var updates = {};
-  updates['/cards/' + card.id] = updatedCard;
-  updates['/lists/' + listId + '/cards/' + card.id ] = true;
-  updates['/lists/' + card.listId + '/cards/' + card.id ] = false;  //how to remove?
+  updates['/cards/' + userId + '/' +  boardId + '/' + oldListId + '/' + cardId] = null;
+  updates['/cards/' + userId + '/' +  boardId + '/' + newListId + '/' + cardId] = updatedCard;
 
   return firebase.database().ref().update(updates);
 
 }
+
