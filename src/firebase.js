@@ -4,7 +4,7 @@ import 'firebase/database';
 
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyCs-5ShaVvYS0mJ8ku1xjxnStg7vD-lbHo",
+  apiKey: process.env.REACT_APP_FB_API_KEY,
   authDomain: "trello-clone-bcc92.firebaseapp.com",
   databaseURL: "https://trello-clone-bcc92.firebaseio.com",
   projectId: "trello-clone-bcc92",
