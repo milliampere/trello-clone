@@ -7,6 +7,7 @@ import firebase, {
   addList as addListToFirebase,
   removeList as removeListFromFirebase
   } from '../../firebase';
+import { forEach } from '@firebase/util';
 
 class Lists extends React.Component {
 
@@ -19,6 +20,23 @@ class Lists extends React.Component {
     console.log('list did mount');
     const uid = this.props.user.uid;
     const boardId = this.props.board.id;
+
+    // Set state
+    firebase.database().ref(`lists/${uid}/${boardId}`)
+      .once('value').then((snapshot) => {
+        const newList = [];
+
+        for(let key in snapshot.val()) {
+          var obj = snapshot.val()[key];
+          console.log(obj);
+          newList.push({
+            id: key,
+            name: obj.name
+          })
+        }
+        console.log(newList);
+        this.setState({lists: newList});
+      });
 
     // Listening for added lists
     firebase.database().ref(`lists/${uid}/${boardId}`)
@@ -52,7 +70,7 @@ class Lists extends React.Component {
     return (
       <div className="lists">
         <div className="lists__header">
-          <h2 className="lists__header__heading">{board.name}</h2>
+          <h2 className="lists__header__heading">{board && board.name}</h2>
         </div>
         <div className="lists__content">
           {lists && lists.map((list) => <ListUnit

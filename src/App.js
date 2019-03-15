@@ -31,6 +31,8 @@ class App extends React.Component {
 
   onUserChange = (user) => {
     if (user) {
+      //this.setState({boards: []});
+      var isAnonymous = user.isAnonymous;
       // User is signed in.
       const userData = {
         displayName: user.displayName,

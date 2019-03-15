@@ -15,21 +15,26 @@ firebase.initializeApp(config);
 
 export default firebase;
 
-
-
 export function addBoard(userId, name) {
 
-  const board = {
-    name
-  };
+  return new Promise((resolve, reject) => {
+    const board = {
+      name
+    };
 
-  const newBoardKey = 'b' + firebase.database().ref().child('boards').push().key;
+    const newBoardKey = 'b' + firebase.database().ref().child('boards').push().key;
+    var updates = {};
+    updates['/boards/' + userId + '/' + newBoardKey] = board;
+    const updateRef = firebase.database().ref().update(updates);
 
-  var updates = {};
-  updates['/boards/' + userId + '/' + newBoardKey] = board;
-  return firebase.database().ref().update(updates);
+    if(updateRef) {
+      resolve(newBoardKey);
+    } else {
+      reject("The write operation failed");
+    };
 
-}
+  });
+};
 
 export function removeBoard(userId, boardId) {
 
