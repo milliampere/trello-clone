@@ -20,7 +20,7 @@
 }
 
 .card__button--remove {
-  display: none; /* remove */
+  opacity: 0.1;
   position: absolute;
   top: 0;
   right: 0;
@@ -28,7 +28,20 @@
   cursor: pointer;
 }
 
+.card__button--checkbox {
+  display: none; /* remove */
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 3px;
+  cursor: pointer;
+}
 
+.card:hover .card__button--remove,
+.card:hover .card__button--checkbox {
+  opacity: 1;
+}
 
 .new-card__input {
   padding: 10px;

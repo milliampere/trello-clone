@@ -1,6 +1,7 @@
 import React from 'react';
 import Cards from '../Card';
 import { moveCard as moveCardInFirebase } from '../../firebase';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class ListUnit extends React.Component {
 
@@ -28,12 +29,19 @@ class ListUnit extends React.Component {
           <h3 className="list-unit__heading">{list.name}</h3>
           <div className="list-unit__button--remove" onClick={() => openPortal({id: list.id, name: list.name})}>X</div>
 
-          <Cards
-            onDragStart={this.onDragStart}
-            user={user}
-            board={board}
-            list={list}
-          />
+          <ReactCSSTransitionGroup
+          transitionName="example"
+          transitionAppear={true}
+          transitionAppearTimeout={500}
+          transitionEnter={false}
+          transitionLeave={false}>
+            <Cards
+              onDragStart={this.onDragStart}
+              user={user}
+              board={board}
+              list={list}
+            />
+          </ReactCSSTransitionGroup>
 
           <div
             className="droppable"

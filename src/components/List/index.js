@@ -7,7 +7,6 @@ import firebase, {
   addList as addListToFirebase,
   removeList as removeListFromFirebase
   } from '../../firebase';
-import { forEach } from '@firebase/util';
 
 class Lists extends React.Component {
 
@@ -21,22 +20,24 @@ class Lists extends React.Component {
     const uid = this.props.user.uid;
     const boardId = this.props.board.id;
 
-    // Set state
+    // Set initial state
     firebase.database().ref(`lists/${uid}/${boardId}`)
       .once('value').then((snapshot) => {
         const newList = [];
 
         for(let key in snapshot.val()) {
+          // skip loop if the property is from prototype
+          if (!snapshot.val()[key]) continue;
+
           var obj = snapshot.val()[key];
-          console.log(obj);
           newList.push({
             id: key,
             name: obj.name
           })
         }
-        console.log(newList);
         this.setState({lists: newList});
-      });
+      }
+    );
 
     // Listening for added lists
     firebase.database().ref(`lists/${uid}/${boardId}`)
@@ -46,7 +47,8 @@ class Lists extends React.Component {
           name: snapshot.val().name,
         }
         this.setState({lists: [...this.state.lists, newList]});
-      })
+      }
+    );
 
     // Listening for removed lists
     firebase.database().ref(`lists/${uid}/${boardId}`)
@@ -57,7 +59,7 @@ class Lists extends React.Component {
         })
       this.setState({lists: listsWithoutRemoved});
     })
-  }
+  };
 
   componentWillUnmount() {
     console.log('list will unmount');
